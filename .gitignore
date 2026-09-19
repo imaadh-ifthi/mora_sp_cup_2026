@@ -1,12 +1,23 @@
 /raw_photos/
 /ground_truth/
-
 /noise/
 /evaluations/
 
-# competition dataset images (keep the README tracked)
-competition_data/public/
-competition_data/submissions/
+# competition dataset images & generated outputs (keep directory structures tracked if needed)
+competition_data/public/*
+competition_data/submissions/*
+!competition_data/**/README.md
+!competition_data/**/.gitkeep
+
+# Big files, weights & archives
+*.png
+*.jpg
+*.jpeg
+*.zip
+*.pth
+scripts/weights/
 
 __pycache__/
 *.py[cod]
+.idea/
+.vscode/
