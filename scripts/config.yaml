@@ -1,0 +1,24 @@
+data_root: competition_data/public     # resolved relative to REPO_ROOT (auto)
+model: nafnet_small
+epochs: 100
+batch_size: 4          # RTX 3050 safe default (AMP). Reduce to 2 if OOM persists.
+tile: 224              # training crop. Reduce to 192 if OOM persists.
+lr: 2.0e-4
+weight_decay: 1.0e-4
+ssim_weight: 0.1
+synth_prob: 0.5
+val_ratio: 0.065
+val_every: 5
+val_limit: 15
+seed: 2026
+weights_dir: scripts/weights
+noise:
+  gamma: [2.0, 2.4]
+  exposure: [0.12, 1.0]
+  photon_k: [200.0, 8000.0]
+  read: [0.0005, 0.012]
+  wb_jitter: 0.06
+inference:
+  tile: 384
+  stride: 320
+  batch: 4

@@ -1,0 +1,4 @@
+weights/*.pth
+weights/*.onnx
+analysis.json
+__pycache__/

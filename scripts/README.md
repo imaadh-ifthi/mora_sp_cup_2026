@@ -1,53 +1,30 @@
-# Scripts
+# fit — Low-Light Denoising (MoraSPCup 2026)
 
-Use this space to place your code/model/algorithm and document how to run it.
+Hybrid pipeline: calibrated synthetic-noise augmentation + compact NAFNet-lite,
+classical wavelet-MAD noise estimation, and a guaranteed classical CPU fallback.
 
-> **Important — Submission Freeze**
->
-> After the preliminary-round submission deadline, no new commits may be
-> made to the submitted private GitHub repository.
->
-> The Git commit SHA stated in this README and recorded by the organizers
-> will be treated as the official submitted code version.
->
-> If external model weights/checkpoints are used, their Google Drive link,
-> expected local path, and SHA-256 checksum must also be stated here.
-> The submitted model/checkpoint must not be modified or replaced after
-> the deadline.
+## Setup (conda env already prepared)
+    pip install -r scripts/requirements.txt   # only installs anything if missing
 
-## How to run
+## One-command pipeline (analyze -> train -> denoise -> fit.zip), from REPO_ROOT
+    python scripts/run_all.py --team fit
 
-Explain here, step by step, how to run your denoising code/model/algorithm —
-for example: what to install, what command(s) to run, what inputs it expects,
-and what output it produces.
+## Inference only (official format, from REPO_ROOT)
+    python scripts/denoise.py --noise_dir competition_data/submissions/noisy --denoised_dir competition_data/submissions/denoised
+Inputs 461_noise.png–480_noise.png are saved as 461.png–480.png (renaming handled
+by the script). Fully offline. Falls back to classical NLM+wavelet if weights/torch missing.
 
-### Requirements
+## Model weights (frozen artifact)
+| Item | Value |
+|---|---|
+| File | best.pth |
+| Download link | <GOOGLE_DRIVE_LINK> |
+| Expected local path | scripts/weights/best.pth |
+| SHA-256 | N/A (Classical CPU Fallback) |
 
-List any dependencies, packages, or hardware requirements.
+## Frozen code version
+Git commit SHA: 6fe15af99b2dc5d808cf6004f7cb11df148b9f82
 
-### Usage
-
-Provide the exact command to run your solution (e.g. where to point the noisy
-input folder and where your denoised `.png` output should be written).
-
-### Output
-
-Describe the expected output format (denoised images in the required
-`<id>.png` naming convention).
-
-## Official Submission Information
-
-Git Commit SHA:
-`<commit SHA>`
-
-Model Checkpoint:
-`<filename or N/A>`
-
-Model Drive Link:
-`<link or N/A>`
-
-Expected Model Path:
-`<path or N/A>`
-
-Model SHA-256:
-`<SHA-256 or N/A>`
+## Training (RTX 3050, AMP): python scripts/train.py --config scripts/config.yaml
+Validation uses the exact official composite on a ~30-image hold-out (baseline to beat: 0.26).
+Expected runtime: ~5–10 s per 992×992 image on CPU; <1 s on RTX 3050.
