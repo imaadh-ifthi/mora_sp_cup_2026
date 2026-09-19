@@ -1,30 +1,37 @@
 # fit — Low-Light Denoising (MoraSPCup 2026)
 
-Hybrid pipeline: calibrated synthetic-noise augmentation + compact NAFNet-lite,
-classical wavelet-MAD noise estimation, and a guaranteed classical CPU fallback.
+Hybrid pipeline combining a NAFNet-lite neural backbone, dihedral-8 deterministic Test-Time Augmentation (TTA), synthetic Poisson-Gaussian noise modeling, offline wavelet-MAD noise map estimation, and a guaranteed classical CPU fallback.
 
-## Setup (conda env already prepared)
-    pip install -r scripts/requirements.txt   # only installs anything if missing
+## Quickstart / Entry Point
+Run from repository root:
 
-## One-command pipeline (analyze -> train -> denoise -> fit.zip), from REPO_ROOT
-    python scripts/run_all.py --team fit
+```bash
+C:\Users\User\anaconda3\envs\image_proc_lab\python.exe scripts\denoise.py --noise_dir competition_data\submissions\noisy --denoised_dir competition_data\submissions\denoised
+```
 
-## Inference only (official format, from REPO_ROOT)
-    python scripts/denoise.py --noise_dir competition_data/submissions/noisy --denoised_dir competition_data/submissions/denoised
-Inputs 461_noise.png–480_noise.png are saved as 461.png–480.png (renaming handled
-by the script). Fully offline. Falls back to classical NLM+wavelet if weights/torch missing.
+Inputs `461_noise.png` – `480_noise.png` are denoised and written as `461.png` – `480.png`. The pipeline is 100% offline. If PyTorch or model weights are missing, it automatically triggers the classical CPU fallback (wavelet-MAD + NLM + wavelet shrinkage).
 
-## Model weights (frozen artifact)
+## Manifest & Model Weights (Frozen Artifacts)
+
 | Item | Value |
 |---|---|
-| File | best.pth |
-| Download link | <GOOGLE_DRIVE_LINK> |
-| Expected local path | scripts/weights/best.pth |
-| SHA-256 | N/A (Classical CPU Fallback) |
+| Manifest File | `scripts/weights/manifest.json` |
+| Primary Weights File | `scripts/weights/best.pth` |
+| Insurance Weights File | `scripts/weights/insurance_best.pth` |
+| Primary SHA-256 | `88420885d3353e707b73a052919ae5f64dc42ea0ba8f91e76897f705e4204fef` |
+| Insurance SHA-256 | `8743c446aab298036761183b92dfcd27a50d313391a10d9756f205079a48f5d0` |
+| Google Drive Upload Link | `<GOOGLE_DRIVE_LINK_PLACEHOLDER>` |
 
-## Frozen code version
-Git commit SHA: 6fe15af99b2dc5d808cf6004f7cb11df148b9f82
+## Performance & Benchmark Summary
 
-## Training (RTX 3050, AMP): python scripts/train.py --config scripts/config.yaml
-Validation uses the exact official composite on a ~30-image hold-out (baseline to beat: 0.26).
-Expected runtime: ~5–10 s per 992×992 image on CPU; <1 s on RTX 3050.
+- **Baseline Score to Beat:** `0.2600`
+- **Insurance Checkpoint Score:** `0.4502`
+- **Trained Model Validation Score (100 epochs):** `0.4692`
+- **Final Validation Score with Dihedral-8 TTA:** **`0.4714`** ($\Delta\text{PSNR} = +8.45\text{ dB}$, $\Delta\text{SSIM} = +0.334$)
+- **GPU Inference Speed (RTX 3050):** `2.4s / image` with Dihedral-8 TTA (`< 0.5s` without TTA)
+- **CPU Deep Inference Speed:** `1.8s / image`
+- **CPU Classical Fallback Speed:** `0.7s / image` (Total for 20 images: ~14s)
+
+## Frozen Version Details
+- **Git Commit SHA:** `53bfbbaeae84daf6905f79c4f0e41dad5ab2a413`
+- **Report Document:** `fit_Report.pdf` (generated from `scripts/results/report_notes.md`)
