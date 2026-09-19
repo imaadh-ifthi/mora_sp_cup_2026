@@ -9,13 +9,15 @@ competition_data/submissions/*
 !competition_data/**/README.md
 !competition_data/**/.gitkeep
 
-# Big files, weights & archives
+# Big files & archives (images and zip files excluded)
 *.png
 *.jpg
 *.jpeg
 *.zip
-*.pth
-scripts/weights/
+
+# Track model weights in repository
+!scripts/weights/*.pth
+!scripts/weights/*.json
 
 __pycache__/
 *.py[cod]

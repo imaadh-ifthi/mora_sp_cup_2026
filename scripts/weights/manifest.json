@@ -1,0 +1,27 @@
+{
+  "team": "fit",
+  "mode": "single_model_tta",
+  "models": [
+    {
+      "name": "nafnet_medium_v2",
+      "type": "nafnet_medium",
+      "widths": [24, 48, 96, 192],
+      "blocks": [1, 1, 1, 1],
+      "weights": "scripts/weights/best.pth",
+      "sha256": "4b68e98bc01d1fa7e18caef900f68d6f5195bcefa0488f7b5871f301dcebbf74",
+      "weight_in_ensemble": 1.0,
+      "noise_conditioning": false
+    }
+  ],
+  "inference": {
+    "tile": 384,
+    "stride": 320,
+    "tta": "dihedral8",
+    "multiscale": null,
+    "classical_correction": false
+  },
+  "fallback": {
+    "type": "classical",
+    "description": "wavelet-MAD + NLM + wavelet shrinkage"
+  }
+}
