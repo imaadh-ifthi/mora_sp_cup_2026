@@ -1,0 +1,33 @@
+data_root: competition_data/public
+model: nafnet_medium
+epochs: 120
+batch_size: 4
+accum_steps: 2
+tile: 256
+lr: 2.0e-4
+weight_decay: 1.0e-4
+warmup_epochs: 5
+grad_clip: 0.5
+ema_decay: 0.999
+charbonnier_weight: 1.0
+charbonnier_eps: 1.0e-3
+ssim_weight: 0.2
+grad_weight: 0.03
+fft_weight: 0.005
+synth_prob: 0.45
+val_ratio: 0.065
+val_every: 5
+seed: 2026
+weights_dir: scripts/weights
+
+noise:
+  gamma: [2.0, 2.4]
+  exposure: [0.12, 1.0]
+  photon_k: [200.0, 8000.0]
+  read: [0.0005, 0.012]
+  wb_jitter: 0.06
+
+inference:
+  tile: 384
+  stride: 320
+  batch: 4

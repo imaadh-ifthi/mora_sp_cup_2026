@@ -1,0 +1,8 @@
+{
+  "model_path": "scripts\\weights\\insurance_best.pth",
+  "sha256": "88420885d3353e707b73a052919ae5f64dc42ea0ba8f91e76897f705e4204fef",
+  "dPSNR": 8.864018599238893,
+  "dSSIM": 0.39193496596196603,
+  "composite": 0.510820676167183,
+  "val_pairs_count": 29
+}
